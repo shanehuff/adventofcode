@@ -25,8 +25,9 @@ class Round
     private function isPlayer2Win(): bool
     {
         return match ($this->player2->hand->shape()) {
-            'rock', 'paper' => $this->player2->hand->score() - $this->player1->hand->score() > 0,
-            'scissor' => 1 === $this->player1->hand->score(),
+            'rock' => 3 === $this->player1->hand->score(),
+            'paper' => 1 === $this->player1->hand->score(),
+            'scissor' => 2 === $this->player1->hand->score(),
             default => false,
         };
 

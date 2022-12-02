@@ -21,7 +21,6 @@ class Player
         return [
             'shape' => $this->hand->shape(),
             'score' => $this->hand->score(),
-            'hand_score' => $this->hand->score(),
         ];
     }
 }

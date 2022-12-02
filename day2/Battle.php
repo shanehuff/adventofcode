@@ -33,16 +33,24 @@ class Battle
     {
         $this->results->each(function ($result, $count) {
             ++$count;
-            $this->scores->push([
+
+            $score = [
                 'round_number' => $count,
-                'player1' => $result['is_player1_win'] ? 6 : ($result['is_draw'] ? 3 : 0) + $result['player1']['hand_score'],
-                'player2' => $result['is_player2_win'] ? 6 : ($result['is_draw'] ? 3 : 0) + $result['player2']['hand_score']
-            ]);
+                'player1_win' => $result['is_player1_win'] ? 6 : ($result['is_draw'] ? 3 : 0),
+                'player2_win' => $result['is_player2_win'] ? 6 : ($result['is_draw'] ? 3 : 0),
+                'player1_hand' => $result['player1']['score'],
+                'player2_hand' => $result['player2']['score']
+            ];
+
+            $score['player1_total'] = $score['player1_win'] + $score['player1_hand'];
+            $score['player2_total'] = $score['player2_win'] + $score['player2_hand'];
+
+            $this->scores->push($score);
         });
     }
 
     public function getPlayer2Score()
     {
-        return $this->scores->sum('player2');
+        return $this->scores->sum('player2_total');
     }
 }

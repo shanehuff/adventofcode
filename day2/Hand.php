@@ -29,7 +29,7 @@ class Hand
         ]);
     }
 
-    public function setSymbol($symbol)
+    public function setSymbol($symbol): static
     {
         $this->symbol = $symbol;
 
@@ -46,14 +46,9 @@ class Hand
         return $this->current()['score'];
     }
 
-    public function strength()
-    {
-        return $this->score() - 1;
-    }
-
     public function current()
     {
-        return $this->data->filter(function($value, $key){
+        return $this->data->filter(function($value){
             return in_array($this->symbol, $value['symbol']);
         })->first();
     }

@@ -5,4 +5,4 @@ return array_map(function ($round) {
         'player1_hand' => $hand1,
         'player2_hand' => $hand2
     ];
-}, array_filter(explode(PHP_EOL, file_get_contents(__DIR__ . '/test.txt'))));
+}, array_filter(explode(PHP_EOL, file_get_contents(__DIR__ . '/input.txt'))));
