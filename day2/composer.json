@@ -1,4 +1,12 @@
 {
+    "autoload": {
+        "files": [
+            "Battle.php",
+            "Hand.php",
+            "Player.php",
+            "Round.php"
+        ]
+    },
     "require": {
         "illuminate/collections": "^9.42",
         "larapack/dd": "^1.1"

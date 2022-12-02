@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '4c7d9dda95930a86149f4de16450e214b393681e',
+        'reference' => 'dbe8e8bab8040c093d1095708a51f22fd7669fd2',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '4c7d9dda95930a86149f4de16450e214b393681e',
+            'reference' => 'dbe8e8bab8040c093d1095708a51f22fd7669fd2',
             'dev_requirement' => false,
         ),
         'illuminate/collections' => array(

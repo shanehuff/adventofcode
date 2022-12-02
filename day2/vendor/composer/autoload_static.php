@@ -11,6 +11,10 @@ class ComposerStaticInitc6bcb73e13d929fc403da9571ab3adbd
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '60799491728b879e74601d83e38b2cad' => __DIR__ . '/..' . '/illuminate/collections/helpers.php',
         '0e423a14e27410a071e5d815d3ffc856' => __DIR__ . '/..' . '/larapack/dd/src/helper.php',
+        '5679561564ed28e4fbf62456ea41738e' => __DIR__ . '/../..' . '/Battle.php',
+        'eba841dfc9a9508860f166ec4e410029' => __DIR__ . '/../..' . '/Hand.php',
+        '07d2e158138f7df78f3e34f9ff7874dc' => __DIR__ . '/../..' . '/Player.php',
+        '9ef0d8c0c326ad3e39f1c2a6ed2d74b0' => __DIR__ . '/../..' . '/Round.php',
     );
 
     public static $prefixLengthsPsr4 = array (
