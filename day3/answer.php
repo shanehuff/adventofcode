@@ -7,6 +7,8 @@ $part1 = $rucksacks->map(function ($data) {
     return (new Rucksack($data))->toArray();
 });
 
+dd($part1);
+
 echo $part1->sum('priority');
 
 $part2 = collect();

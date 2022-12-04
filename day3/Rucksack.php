@@ -40,7 +40,7 @@ class Rucksack
         return collect(array_intersect(
             str_split($this->first()),
             str_split($this->second())
-        ))->first();
+        ));
     }
 
     private function priority()
