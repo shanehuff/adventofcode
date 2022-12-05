@@ -4,7 +4,6 @@ use Illuminate\Support\Collection;
 
 class Stack
 {
-
     private Collection $crates;
     private Collection $moves;
     private int $cratesCount = 0;
@@ -17,15 +16,25 @@ class Stack
         $this->grids = collect();
     }
 
-    public function setCrates(Collection $crates): void
+    public function setCrates(array $crates): void
     {
-        $this->crates = $crates;
+        $this->crates = collect($crates)->map(function ($crates) {
+            $output = [];
+            foreach ($crates as $index => $crate) {
+                $output[$index] = $crate ? new Crate($crate) : null;
+            }
+
+            return $output;
+        });
+
         $this->setupCrates();
     }
 
-    public function setMoves(Collection $moves): void
+    public function setMoves(array $moves): void
     {
-        $this->moves = $moves;
+        $this->moves = collect($moves)->map(function ($move) {
+            return new Move($move);
+        });
     }
 
     public function toArray(): array

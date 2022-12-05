@@ -5,11 +5,7 @@ function parse_crate($crates): array
     preg_match_all('/\[([A-Z_]+)\]/', $crates, $matches);
     $crates = [];
     foreach ($matches[1] as $index => $crate) {
-        if ('_' === $crate) {
-            $crates[$index + 1] = null;
-        } else {
-            $crates[$index + 1] = $crate;
-        }
+        $crates[$index + 1] = '_' === $crate ? null : $crate;
     }
     return $crates;
 }
@@ -28,20 +24,7 @@ $moves = array_map(function ($line) {
     ];
 }, array_filter(explode(PHP_EOL, file_get_contents(__DIR__ . '/move-input.txt'))));
 
-$crates = collect($crates)->map(function ($crates) {
-    $output = [];
-    foreach ($crates as $index => $crate) {
-        $output[$index] = $crate ? new Crate($crate) : null;
-    }
-
-    return $output;
-});
-
-$moves = collect($moves)->map(function ($move) {
-    return new Move($move);
-});
-
 return [
-    'crates' => $crates,
-    'moves' => $moves
+    $crates,
+    $moves
 ];
