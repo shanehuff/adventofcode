@@ -19,71 +19,28 @@ class Pair
         ];
     }
 
-    private function first(): Assignment
+    // Create function to create Assignment instance from $this->data[0]
+    public function first(): Assignment
     {
         return new Assignment($this->data[0]);
     }
 
-    private function second(): Assignment
+    // Create function to create Assignment instance from $this->data[1]
+    public function second(): Assignment
     {
         return new Assignment($this->data[1]);
     }
 
-    private function isFullyContainEachOther(): bool
+    // Check if first contains second or second contains first‘s head or tail
+    public function isFullyContainEachOther(): bool
     {
-        return $this->firstContainsSecond() || $this->secondContainsFirst();
+        return $this->first()->head() <= $this->second()->head() && $this->second()->tail() <= $this->first()->tail();
     }
 
-    private function firstContainsSecond(): bool
+    // Create function to check if $this->first() and $this->second() overlap
+    public function isOverlap(): bool
     {
-        return $this->first()->head() <= $this->second()->head()
-            && $this->first()->tail() >= $this->second()->tail();
+        return $this->first()->head() <= $this->second()->tail() && $this->second()->head() <= $this->first()->tail();
     }
-
-    private function secondContainsFirst(): bool
-    {
-        return $this->second()->head() <= $this->first()->head()
-            && $this->second()->tail() >= $this->first()->tail();
-    }
-
-    private function isOverlap(): bool
-    {
-        return $this->firstOverlapSecond() || $this->secondOverlapFirst();
-    }
-
-    private function firstOverlapSecond(): bool
-    {
-        return $this->secondHeadInsideFirst() || $this->secondTailInsideFirst();
-    }
-
-    private function secondOverlapFirst(): bool
-    {
-        return $this->firstHeadInsideSecond() || $this->firstTailInsideSecond();
-    }
-
-    private function secondHeadInsideFirst(): bool
-    {
-        return $this->first()->head() <= $this->second()->head()
-            && $this->second()->head() <= $this->first()->tail();
-    }
-
-    private function secondTailInsideFirst(): bool
-    {
-        return $this->first()->head() <= $this->second()->tail()
-            && $this->second()->tail() <= $this->first()->tail();
-    }
-
-    private function firstHeadInsideSecond(): bool
-    {
-        return $this->second()->head() <= $this->first()->head()
-            && $this->first()->head() <= $this->second()->tail();
-    }
-
-    private function firstTailInsideSecond(): bool
-    {
-        return $this->second()->head() <= $this->first()->tail()
-            && $this->first()->tail() <= $this->second()->tail();
-    }
-
 
 }

@@ -7,10 +7,10 @@ $part1 = $pairs->map(function ($pair) {
     return (new Pair($pair))->toArray();
 });
 
-echo $part1->where('is_fully_contain_each_other', true)->count();
+//dd( $part1->where('is_fully_contain_each_other', true)->count());
 
 $part2 = $pairs->map(function ($pair) {
     return (new Pair($pair))->toArray();
 });
 
-echo $part2->where('is_overlap', true)->count();
+dd($part2->where('is_overlap', true)->count());
