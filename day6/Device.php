@@ -10,8 +10,6 @@ class Device
 
     private int $currentPosition = -1;
 
-    private string $currentChars;
-
     private bool $running = true;
 
     private int $limit;
@@ -39,8 +37,6 @@ class Device
         if ($this->currentPosition >= $this->limit) {
             $this->running = $this->maybeStop($currentChars);
         }
-
-        $this->currentChars = $currentChars;
     }
 
     public function isRunning(): bool
@@ -50,10 +46,8 @@ class Device
 
     private function maybeStop($chars): bool
     {
-        // Get latest 4 chars from $chars
         $latestChars = substr($chars, -1 * $this->limit);
 
-        // Check if $latestChars contains 4 different chars
         return count(array_unique(str_split($latestChars))) < $this->limit;
     }
 
