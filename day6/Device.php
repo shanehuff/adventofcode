@@ -13,6 +13,8 @@ class Device
     private bool $running = true;
 
     private int $limit;
+    
+    private string $currentChars = '';
 
     public function __construct($data, $limit = 4)
     {
@@ -32,11 +34,16 @@ class Device
     public function stream(): void
     {
         $this->currentPosition++;
-        $currentChars = $this->chars->take($this->currentPosition)->join('');
+        $this->currentChars = $this->chars->take($this->currentPosition)->join('');
 
-        if ($this->currentPosition >= $this->limit) {
-            $this->maybeStop($currentChars);
+        if ($this->shouldReview()) {
+            $this->maybeStop();
         }
+    }
+    
+    private function shouldReview(): bool
+    {
+        return $this->currentPosition >= $this->limit;
     }
 
     public function isRunning(): bool
@@ -44,11 +51,14 @@ class Device
         return $this->currentPosition < $this->chars->count() && $this->running;
     }
 
-    private function maybeStop($chars): void
+    private function maybeStop(): void
     {
-        $latestChars = substr($chars, -1 * $this->limit);
-
-        $this->running = count(array_unique(str_split($latestChars))) < $this->limit;
+        $this->running = $this->isUniquePatternNotFound();
+    }
+    
+    private function isUniquePatternNotFound()
+    {        
+        return count(array_unique(str_split(substr($this->currentChars, -1 * $this->limit)))) < $this->limit;
     }
 
     public function stoppedAt(): int
