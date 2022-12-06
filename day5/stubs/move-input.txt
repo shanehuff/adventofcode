@@ -238,7 +238,7 @@ move 3 from 6 to 4
 move 3 from 4 to 7
 move 15 from 1 to 5
 move 1 from 6 to 5
-move 12 from 5 to 4
+move 60 from 5 to 4
 move 10 from 9 to 8
 move 3 from 7 to 8
 move 1 from 9 to 1

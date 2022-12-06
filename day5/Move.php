@@ -2,14 +2,14 @@
 
 class Move
 {
-    private $data;
+    private array $data;
 
     public function __construct($data)
     {
         $this->data = $data;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'quantity' => $this->quantity(),

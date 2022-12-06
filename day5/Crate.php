@@ -2,16 +2,18 @@
 
 class Crate
 {
-    private $data;
+    private ?string $data;
 
     public function __construct($data)
     {
         $this->data = $data;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
-        return $this->data;
+        return [
+            'data' => $this->data
+        ];
     }
 
     public function hasStuff(): bool

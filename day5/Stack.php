@@ -63,7 +63,6 @@ class Stack
 
         for ($col = 0; $col <= $this->columns; $col++) {
             $this->crates->each(function ($crates, $index) use ($col) {
-
                 if (isset($crates[$col])) {
                     $this->grids->push([
                         'id' => uniqid(),
@@ -88,7 +87,7 @@ class Stack
 
     public function moveOneAtATime(): void
     {
-        $this->moves->each(function ($move) {
+        $this->moves->each(function (Move $move) {
             while ($move->quantity() > 0) {
                 if ($cell = $this->getTopCellByCol($move->from())) {
                     $this->moveCellToCol($cell, $move->to());
@@ -100,7 +99,10 @@ class Stack
 
     private function getTopCellByCol(int $from)
     {
-        return $this->grids->where('col', $from)->sortByDesc('index')->first();
+        return $this->grids
+            ->where('col', $from)
+            ->sortByDesc('index')
+            ->first();
     }
 
     private function moveCellToCol($fromCell, int $toCol): void
@@ -118,12 +120,11 @@ class Stack
         });
     }
 
-    public function toLetters(): string
+    public function toString(): string
     {
         $letters = [];
         for ($i = 1; $i <= $this->columns; $i++) {
-            $cell = $this->getTopCellByCol($i);
-            if ($cell) {
+            if ($cell = $this->getTopCellByCol($i)) {
                 $letters[] = $cell['content']->toString();
             };
         }
@@ -133,13 +134,17 @@ class Stack
 
     private function getTopCellsByCol($from, $quantity): Collection
     {
-        return $this->grids->where('col', $from)->sortByDesc('index')->take($quantity);
+        return $this->grids
+            ->where('col', $from)
+            ->sortByDesc('index')
+            ->take($quantity);
     }
 
     private function moveCellsToCol(Collection $cells, $to): void
     {
-        $cells->sortBy('index')->each(function ($cell) use ($to) {
-            $this->moveCellToCol($cell, $to);
-        });
+        $cells->sortBy('index')
+            ->each(function ($cell) use ($to) {
+                $this->moveCellToCol($cell, $to);
+            });
     }
 }
