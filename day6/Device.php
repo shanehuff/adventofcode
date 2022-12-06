@@ -35,7 +35,7 @@ class Device
         $currentChars = $this->chars->take($this->currentPosition)->join('');
 
         if ($this->currentPosition >= $this->limit) {
-            $this->running = $this->maybeStop($currentChars);
+            $this->maybeStop($currentChars);
         }
     }
 
@@ -44,11 +44,11 @@ class Device
         return $this->currentPosition < $this->chars->count() && $this->running;
     }
 
-    private function maybeStop($chars): bool
+    private function maybeStop($chars): void
     {
         $latestChars = substr($chars, -1 * $this->limit);
 
-        return count(array_unique(str_split($latestChars))) < $this->limit;
+        $this->running = count(array_unique(str_split($latestChars))) < $this->limit;
     }
 
     public function stoppedAt(): int
