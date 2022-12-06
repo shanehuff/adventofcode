@@ -56,7 +56,7 @@ class Device
         $this->running = $this->isUniquePatternNotFound();
     }
     
-    private function isUniquePatternNotFound()
+    private function isUniquePatternNotFound(): bool
     {        
         return count(array_unique(str_split(substr($this->currentChars, -1 * $this->limit)))) < $this->limit;
     }
