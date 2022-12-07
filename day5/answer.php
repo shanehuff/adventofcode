@@ -9,14 +9,4 @@ $stackPart1->setMoves($moves);
 
 $stackPart1->moveOneAtATime();
 
-var_dump($stackPart1->toString());
-
-$stackPart2 = new Stack;
-$stackPart2->setCrates($crates);
-$stackPart2->setMoves($moves);
-
-$stackPart2->moveMultipleAtATime();
-
-dd($stackPart2->toString());
-
 

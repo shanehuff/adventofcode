@@ -25,4 +25,9 @@ class Crate
     {
         return $this->data;
     }
+
+    public function toGraphic(): string
+    {
+        return sprintf('[ %s ]', $this->data);
+    }
 }

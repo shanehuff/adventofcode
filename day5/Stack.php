@@ -93,6 +93,8 @@ class Stack
                     $this->moveCellToCol($cell, $move->to());
                 }
                 $move->decrementQuantity();
+
+                $this->draw();
             }
         });
     }
@@ -146,5 +148,24 @@ class Stack
             ->each(function ($cell) use ($to) {
                 $this->moveCellToCol($cell, $to);
             });
+    }
+
+    public function draw(): void
+    {
+        echo chr(8);
+        for ($i = $this->rows; $i >= 1; $i--) {
+            $this->drawRow($i);
+        }
+        usleep(100000);
+    }
+
+    private function drawRow(int $i): void
+    {
+        for($j = 1; $j <= $this->columns; $j++) {
+            $cell = $this->grids->where('index', $i)->where('col', $j)->first();
+            echo is_null($cell) ? '     ' : $cell['content']->toGraphic();
+            echo ' ';
+        }
+        echo PHP_EOL;
     }
 }
