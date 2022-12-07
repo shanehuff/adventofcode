@@ -27,13 +27,14 @@ class FileSystem
         ];
     }
 
-    public function loadHistories(array $histories): void
+    public function makeFromCommandHistories(array $histories): void
     {
         $this->histories = collect($histories)->map(function ($history) {
             return new History($history);
         });
 
         $this->createFromHistories();
+        $this->calculateSizes();
     }
 
     private function createFromHistories(): void
@@ -138,36 +139,24 @@ class FileSystem
         }
     }
 
-    public function getDirectoriesWithSize()
+    private function getDirectorySize($directory)
     {
-        return $this->nodes->filter(function ($node) {
-            return $node['type'] === self::TYPE_DIRECTORY;
-        })->map(function ($node) {
-            $node['size'] = $this->getDirectorySize($node['path']);
-            return $node;
+        return $this->nodes->filter(function ($node) use ($directory) {
+            return $this->isNodeInDirectory($node, $directory);
+        })->sum('size');
+    }
+
+    public function directoriesSmallerThan($size): Collection
+    {
+        return $this->nodes->filter(function ($node) use ($size) {
+            return $node['size'] <= $size && $node['type'] === self::TYPE_DIRECTORY;
         });
     }
 
-    private function getDirectorySize(string $path)
+    public function directoriesCanBeFreeUp($size): Collection
     {
-        $directory = $this->findNodeByPath($path);
-        $size = 0;
-        if ($directory['type'] === self::TYPE_DIRECTORY) {
-            $size += $this->nodes->filter(function ($node) use ($directory) {
-                // Check if directory path include node path
-                return str_contains($node['path'], $directory['path']);
-
-                //return $node['parent'] === $directory['path'];
-            })->sum('size');
-        }
-
-        return $size;
-    }
-
-    public function getDeletableDirectories()
-    {
-        return $this->getDirectoriesWithSize()->filter(function ($directory) {
-            return $directory['size'] <= 100000;
+        return $this->nodes->filter(function ($node) use ($size) {
+            return $node['size'] >= ($size - $this->freeSpace()) && $node['type'] === self::TYPE_DIRECTORY;
         });
     }
 
@@ -189,14 +178,59 @@ class FileSystem
 
     private function renderNode($node): void
     {
-        $name = $node['name'] === '' ? '/' : $node['name'];
+        $isRoot = '/' === $node['path'];
         $isDir = $node['type'] === self::TYPE_DIRECTORY;
         $indent = str_repeat('--', substr_count($node['path'], '/'));
-        echo $indent . ' ';
-        echo $name;
+        echo $isRoot ? '' : $indent . ' ';
+        echo $isRoot ? '-/' : $node['name'];
         echo ' ';
         $nodeSize = $node['size'] ?? 0;
-        echo $isDir ? '(dir, ' . $nodeSize . ')' : '(file, ' . $nodeSize . ' )';
+        echo $isDir ? '(dir, ' . $this->mb($nodeSize) . ')' : '(file, ' . $this->mb($nodeSize) . ')';
         echo PHP_EOL;
+    }
+
+    public function ls(string $path): Collection
+    {
+        // Return nodes of given path
+        return $this->nodes->filter(function ($node) use ($path) {
+            return $node['parent'] === $path;
+        });
+    }
+
+    public function calculateSizes(): static
+    {
+        $this->nodes->transform(function ($node) {
+            if ($node['type'] === self::TYPE_DIRECTORY) {
+                $node['size'] = $this->getDirectorySize($node);
+            }
+            return $node;
+        });
+
+        return $this;
+    }
+
+    private function mb(mixed $nodeSize): string
+    {
+        return round($nodeSize / 1000000,2) . ' MB';
+    }
+
+    private function isNodeInDirectory($node, $directory): bool
+    {
+        $count = strlen($directory['name']) + 1;
+        $isSameRoot = substr($node['parent'], 0, $count) === substr($directory['path'], 0, $count);
+
+        return str_contains($node['parent'], $directory['path'])
+            && $node['path'] !== $directory['path']
+            && $isSameRoot;
+    }
+
+    public function getUsedSpace()
+    {
+        return $this->findNodeByPath('/')['size'];
+    }
+
+    public function freeSpace()
+    {
+        return 70000000 - $this->getUsedSpace();
     }
 }

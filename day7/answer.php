@@ -3,12 +3,14 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $commandHistories = include __DIR__ . '/stubs/input.php';
 
-$files = new FileSystem();
+$storage = new FileSystem();
 
-$files->loadHistories($commandHistories);
+$storage->makeFromCommandHistories($commandHistories);
 
-//dd($files->getDeletableDirectories()->sum('size'));
-//dd($files->toArray()['nodes']);
-$files->renderTrees();
+// Part 1
+//dd($files->directoriesSmallerThan(100000)->sum('size'));
 
-//dd($files->toArray()['nodes']);
+// Part 2
+//dd($files->directoriesCanBeFreeUp(30000000)->sum('size'));
+
+$storage->renderTrees();

@@ -1,5 +1,5 @@
 <?php
-$input = file_get_contents(__DIR__ . '/test.txt');
+$input = file_get_contents(__DIR__ . '/input.txt');
 $histories = array_filter(explode('$ ', $input));
 
 $commands = [];
