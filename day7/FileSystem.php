@@ -160,10 +160,10 @@ class FileSystem
         });
     }
 
-    public function renderTrees(): void
+    public function renderTrees($node): void
     {
         // Render tree of root node
-        $this->renderTree($this->findNodeByPath('/'));
+        $this->renderTree($node);
     }
 
     private function renderTree($node): void
@@ -189,12 +189,9 @@ class FileSystem
         echo PHP_EOL;
     }
 
-    public function ls(string $path): Collection
+    public function ls(string $path): void
     {
-        // Return nodes of given path
-        return $this->nodes->filter(function ($node) use ($path) {
-            return $node['parent'] === $path;
-        });
+        $this->renderTrees($this->findNodeByPath($path));
     }
 
     public function calculateSizes(): static

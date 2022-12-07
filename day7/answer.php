@@ -13,4 +13,4 @@ $storage->makeFromCommandHistories($commandHistories);
 // Part 2
 //dd($files->directoriesCanBeFreeUp(30000000)->sum('size'));
 
-$storage->renderTrees();
+$storage->ls('/');
