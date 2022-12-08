@@ -8,9 +8,9 @@ $storage = new FileSystem();
 $storage->makeFromCommandHistories($commandHistories);
 
 // Part 1
-//dd($files->directoriesSmallerThan(100000)->sum('size'));
+//dd($storage->directoriesSmallerThan(100000)->sum('size'));
 
 // Part 2
-//dd($files->directoriesCanBeFreeUp(30000000)->sum('size'));
+//dd($storage->directoriesCanBeFreeUp(30000000)->sum('size'));
 
 $storage->ls('/');

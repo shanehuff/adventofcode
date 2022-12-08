@@ -93,8 +93,6 @@ class Stack
                     $this->moveCellToCol($cell, $move->to());
                 }
                 $move->decrementQuantity();
-
-                $this->draw();
             }
         });
     }
