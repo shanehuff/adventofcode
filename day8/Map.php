@@ -20,6 +20,7 @@ class Map
 
     private Collection $bottom;
     private Collection $right;
+    private int $maxScenicScore;
 
     public function __construct()
     {
@@ -39,6 +40,7 @@ class Map
                     'id' => ++$id,
                     'x' => $x,
                     'y' => $y,
+                    'height' => (int) $tree,
                     'tree' => new Tree($tree, $id),
                 ]);
             });
@@ -46,8 +48,10 @@ class Map
 
         $this->width = $this->grids->max('x') + 1;
         $this->height = $this->grids->max('y') + 1;
-        $this->depth = $this->grids->max('tree.height');
+        $this->depth = $this->grids->max('height');
         $this->total = $id;
+
+        //$this->calculateScenicScores();
     }
 
     public function toArray(): array
@@ -206,5 +210,90 @@ class Map
                 'tree' => $tree,
             ]);
         }
+    }
+
+    private function calculateScenicScores(): void
+    {
+        $scores = collect();
+        $this->grids->each(function ($grid) use (&$scores) {
+            $score = $this->getScenicScore($grid);
+            var_dump($grid['id'] . " " . $score);
+            $scores->push([
+                'score' => $score
+            ]);
+
+            return $grid;
+        });
+
+        $this->maxScenicScore = $scores->max('score');
+    }
+
+    private function getScenicScore($grid): float|int
+    {
+        if ($this->isEdge($grid)) {
+            return 0;
+        }
+
+        $up = $this->getUpScenicScore($grid);
+        $down = $this->getDownScenicScore($grid);
+        $left = $this->getLeftScenicScore($grid);
+        $right = $this->getRightScenicScore($grid);
+
+        return abs($up * $down * $left * $right);
+    }
+
+    public function findTreeById(int $id)
+    {
+        return $this->grids->where('id', $id)->first();
+    }
+
+    private function isEdge($grid): bool
+    {
+        return $grid['x'] === 0 || $grid['x'] === $this->width - 1 || $grid['y'] === 0 || $grid['y'] === $this->height - 1;
+    }
+
+    private function getUpScenicScore($grid)
+    {
+        $blocker = $this->grids->where('y', $grid['y'])
+            ->where('x', '<', $grid['x'])
+            ->where('height', '>=', $grid['height'])
+            ->first();
+
+        return $blocker ? $blocker['x'] - $grid['x'] : 0 - $grid['x'];
+    }
+
+    private function getDownScenicScore($grid)
+    {
+        $blocker = $this->grids->where('y', $grid['y'])
+            ->where('x', '>', $grid['x'])
+            ->where('height', '>=', $grid['height'])
+            ->first();
+
+        return $blocker ? $grid['x'] - $blocker['x'] : $this->width - 1 - $grid['x'];
+    }
+
+    private function getLeftScenicScore($grid)
+    {
+        $blocker = $this->grids->where('x', $grid['x'])
+            ->where('y', '<', $grid['y'])
+            ->where('height', '>=', $grid['height'])
+            ->first();
+
+        return $blocker ? $blocker['y'] - $grid['y'] : 0 - $grid['y'];
+    }
+
+    private function getRightScenicScore($grid)
+    {
+        $blocker = $this->grids->where('x', $grid['x'])
+            ->where('y', '>', $grid['y'])
+            ->where('height', '>=', $grid['height'])
+            ->first();
+
+        return $blocker ? $grid['y'] - $blocker['y'] : $this->height - 1 - $grid['y'];
+    }
+
+    public function getHighestScenicScore(): int
+    {
+        return $this->maxScenicScore;
     }
 }

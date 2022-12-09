@@ -7,7 +7,10 @@ $map = new Map;
 
 $map->create($trees);
 
-echo $map->renderAbove();
-
 // Part 1
-echo $map->countVisible();
+//echo $map->countVisible();
+echo PHP_EOL;
+
+// Part 2
+echo $map->getHighestScenicScore();
+echo PHP_EOL;
