@@ -8,7 +8,7 @@ $map = new Map;
 $map->create($trees);
 
 // Part 1
-//echo $map->countVisible();
+echo $map->countVisible();
 echo PHP_EOL;
 
 // Part 2

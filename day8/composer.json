@@ -2,7 +2,8 @@
     "autoload": {
         "files": [
             "Tree.php",
-            "Map.php"
+            "Map.php",
+            "ScenicScore.php"
         ]
     },
     "require": {
