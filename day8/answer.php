@@ -3,7 +3,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $trees = include __DIR__ . '/stubs/input.php';
 
-$map = new Map;
+$map = new Diagram;
 
 $map->create($trees);
 
