@@ -62,8 +62,10 @@ for ($i = 0; $i < count($originals); $i++) {
 $bn = 1;
 
 foreach ($divisions as $division) {
-    $bn *= $bn * $division;
+    $bn *= $division;
 }
+
+$items = $originals;
 
 for ($k = 0; $k < 10000; $k++) {
     for ($i = 0; $i <= count($originals); $i++) {
