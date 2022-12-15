@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-$input = file_get_contents(__DIR__ . '/test.txt');
+$input = file_get_contents(__DIR__ . '/input.txt');
 $g = array_map(function ($line) {
     return str_split($line);
 }, explode("\n", $input));
@@ -65,10 +65,11 @@ for ($i = 0; $i < $cols; $i++) {
 
         while (count($queue) > 0) {
             [$x, $y] = $queue->shift();
+
             if ([$x, $y] === [$tx, $ty]) {
                 $answer = $d[$tx . $ty];
                 if ([$i, $j] === [$sx, $sy]) {
-                    var_dump($answer);
+                    var_dump('p1: '.$answer);
                 }
                 break;
             }
@@ -80,6 +81,8 @@ for ($i = 0; $i < $cols; $i++) {
                 if (0 <= $nx && $nx < $cols && 0 <= $ny && $ny < $rows) {
                     if ($g[$x][$y] >= $g[$nx][$ny] - 1) {
                         $nd = $d[$x . $y] + 1;
+//                        var_dump('nd:'.$nd);
+//                        var_dump('od:'.$d[$x.$y]);
                         if ($nd < $d[$nx . $ny]) {
                             $d[$nx . $ny] = $nd;
                             $queue->push([$nx, $ny]);
