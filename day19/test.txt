@@ -1,0 +1,6 @@
+✨ Introducing `plz`, an AI-powered command generator. Kinda like copilot, but for your terminal.
+
+It's ideal for all those weird unix commands that take dozens of flags, and you never know which ones to use (like ffmpeg).
+
+(takes one command to setup 👇)
+
