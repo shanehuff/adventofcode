@@ -13,6 +13,21 @@ def extract_calibration_values(document):
 
     return total_sum
 
+def extract_calibration_values_p2(document):
+    # Replace the words 'zero' to 'nine' with the corresponding digits
+    document = [line.replace('zero', 'z0o') for line in document]
+    document = [line.replace('one', 'o1e') for line in document]
+    document = [line.replace('two', 't2o') for line in document]
+    document = [line.replace('three', 't3e') for line in document]
+    document = [line.replace('four', 'f4r') for line in document]
+    document = [line.replace('five', 'f5e') for line in document]
+    document = [line.replace('six', 's6x') for line in document]
+    document = [line.replace('seven', 's7n') for line in document]
+    document = [line.replace('eight', 'e8t') for line in document]
+    document = [line.replace('nine', 'n9e') for line in document]
+
+    return extract_calibration_values(document)
+
 
 # Open the file and read its contents
 with open('1.txt', 'r') as file:
@@ -31,6 +46,14 @@ calibration_document = data_list
 
 # Calculate the sum of calibration values
 result = extract_calibration_values(calibration_document)
+
+# Print the result
+print(result)
+
+# Part 2
+
+# Calculate the sum of calibration values
+result = extract_calibration_values_p2(calibration_document)
 
 # Print the result
 print(result)
