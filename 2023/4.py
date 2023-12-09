@@ -1,24 +1,29 @@
 import sys
+import re
+from collections import defaultdict
 
-# Using a more descriptive variable name for the list
-cumulative_sums = [1] * 200
+# Read input from file and split into lines
+input_data = open('4.txt').read().strip()
+lines = input_data.split('\n')
 
-for i, line in enumerate(sys.stdin):
-    # Extracting cards from the input line
-    cards = line.strip().split(": ")[1].split(" | ")
+total_points = 0
+occurrences_dict = defaultdict(int)
 
-    # Creating sets for player's and opponent's cards
-    player_cards = set(cards[0].split(" ")) - {''}
-    opponent_cards = set(cards[1].split(" ")) - {''}
+for i, line in enumerate(lines):
+    occurrences_dict[i] += 1
+    first_part, rest_part = line.split('|')
+    identifier, card_numbers = first_part.split(':')
 
-    # Calculating the number of common cards
-    points = len(player_cards.intersection(opponent_cards))
+    card_values = [int(x) for x in card_numbers.split()]
+    rest_values = [int(x) for x in rest_part.split()]
 
-    # Updating the cumulative sums using the defined formula
-    for j in range(points):
-        cumulative_sums[j + i + 1] += cumulative_sums[i]
+    common_values_count = len(set(card_values) & set(rest_values))
 
-# Summing up the cumulative sums for the final result
-result = sum(cumulative_sums)
+    if common_values_count > 0:
+        total_points += 2 ** (common_values_count - 1)
 
-print(result)
+    for j in range(common_values_count):
+        occurrences_dict[i + 1 + j] += occurrences_dict[i]
+
+print(total_points)
+print(sum(occurrences_dict.values()))
